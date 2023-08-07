@@ -1,8 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { SEND_MAIN_PING, SET_SIN_VALUE } = require('./constants');
+const { clearInterval } = require('timers');
 
 let mainWindow;
+var count = 0;
+let nonInterval
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -10,20 +13,40 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
       contextIsolation: false
     }
   });
-  mainWindow.loadURL("http://localhost:3000");
-}
+  mainWindow.loadURL('http://localhost:3000');}
 
 ipcMain.on(SEND_MAIN_PING, (event, arg) => {
   console.log("Main.js received a ping!!!");
 });
 
+function setSinValue(){
+  setInterval(() => {
+    const data = {
+      name: `Page ${count}`,
+      uv: Math.floor(Math.sin(count * Math.PI) * 4000)
+    };
+      
+    mainWindow.webContents.send('periodic-data', data);
+
+    count++;
+  }
+), 1000};
+
+let intervalId = null; // interval ID 저장 변수 추가
+
 ipcMain.on(SET_SIN_VALUE, (event, arg) => {
-  // sin값을 구하는 데이터 요청
-  const sinValue = Math.sin(80*Math.PI)*150;
-  mainWindow.webContents.send('get_sin', sinValue);
+  console.log("sin값 보내란다");
+  setSinValue();
+});
+
+ipcMain.on('stop_sin', () => {
+  clearInterval(intervalId);
+  intervalId = null;
+  mainWindow.webContents.send('complete_sin', 'stop');
 });
 
 app.whenReady().then(() => {
