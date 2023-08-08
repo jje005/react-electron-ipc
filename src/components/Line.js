@@ -1,17 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { PureComponent } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-function LineChartComponent({ data }) {
-  return (
-    <LineChart width={400} height={400} data={data}>
-      <XAxis dataKey="name" />
-      <YAxis />
-      <CartesianGrid stroke="#ccc" />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="value" stroke="#8884d8" />
-    </LineChart>
-  );
-}
+const electron = window.require("electron")
 
-export default LineChartComponent;
+const stop_sin = () => {
+  electron.ipcRenderer.send('stop_sin', 'stop');
+}
+export default class LineChartComponent extends PureComponent {
+
+  render() {
+    
+    const sinData = this.props.sinData;
+
+    intervalId = setInterval(() => {
+      const xValue = sinData.name;
+      const yValue = sinData.uv;
+      
+    })
+    return (
+      <LineChart 
+        width={500}
+        height={400}
+        data={sinData}          
+        margin={{
+            top: 25,
+            right: 40,
+            left: 20,
+            bottom: 10,
+        }}>
+        <XAxis dataKey="name" />
+        <YAxis />
+        <CartesianGrid stroke="#ccc" />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+      </LineChart>,
+        <button size="large" onClick={stop_sin}>stop</button>
+        );
+  }
+}

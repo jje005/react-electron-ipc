@@ -50,7 +50,7 @@ ipcMain.on(SET_SIN_VALUE, (event, arg) => {
     mainWindow.webContents.send('periodic-data', data);
     console.log(data.uv);
 
-    count+=0.3;
+    count+=0.5;
   }, 500)
 })
 
