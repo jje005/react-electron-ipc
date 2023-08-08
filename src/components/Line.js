@@ -64,7 +64,7 @@ class LineChartComponent extends Component {
     return (
       <div>
         <h1>Sin 곡선 그래프</h1>
-        <LineChart width={400} height={200} data={chartData}>
+        <LineChart width={480} height={480} data={chartData}>
           <XAxis dataKey="name" />
           <YAxis />
           <CartesianGrid stroke="#ccc" />
