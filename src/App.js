@@ -26,19 +26,20 @@ function App() {
 
     return () => {
       electron.ipcRenderer.removeAllListeners('periodic-data');
-    };
-  }, []);
+    } ;
+  }, 10);
 
   return (
     <div className="App">
       <header className="App-header">
-        <p>그래프를 그려보자</p>
-        <button size="large" onClick={sendMain}>Send Ping</button>
-        <button size="large" onClick={() => changeView('LineChartComponent')}>Sin 그래프</button>
-        {currentView === 'main' ? (
-          <h2>메인 화면</h2>
+      {currentView === 'main' ? (
+          <React.Fragment>
+            <p>그래프를 그려보자</p>
+            <button size="large" onClick={sendMain}>Send Ping</button>
+            <button size="large" onClick={() => changeView('LineChartComponent')}>Sin 그래프</button>
+          </React.Fragment>
         ) : (
-          <LineChartComponent sinData={sinData} /> 
+          <LineChartComponent sinData={sinData} />
         )}
       </header>
     </div>

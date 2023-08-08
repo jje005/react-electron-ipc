@@ -6,6 +6,7 @@ const { clearInterval } = require('timers');
 let mainWindow;
 var count = 0;
 
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -25,25 +26,22 @@ ipcMain.on(SEND_MAIN_PING, (event, arg) => {
 let intervalId = null; // interval ID 저장 변수 추가
 
 ipcMain.on(SET_SIN_VALUE, (event, arg) => {
-  console.log(Math.PI);
   console.log("sin값 보내란다");
-  setInterval(() => {
+  intervalId = setInterval(() => {
     const data = {
-      name: `Page ${count}`,
+      name: ` ${(Math.floor(count*10))+1} ms`,
       uv: Math.floor(Math.sin(count) * 128)
-    }
-    
+    }    
     mainWindow.webContents.send('periodic-data', data);
     console.log(data.uv);
-
+  
     count+=0.1;
-  }, 100)
+  }, 100)  
 })
 
-
 ipcMain.on('stop_sin', () => {
+  console.log("멈추라고 명령옴");
   clearInterval(intervalId);
-  intervalId = null;
   mainWindow.webContents.send('complete_sin', 'stop');
 });
 
