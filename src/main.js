@@ -29,13 +29,13 @@ ipcMain.on(SET_SIN_VALUE, (event, arg) => {
   console.log("sin값 보내란다");
   intervalId = setInterval(() => {
     const data = {
-      name: ` ${(Math.floor(count*10))+1} ms`,
+      name: ` ${(count*10)} ms`,
       uv: Math.floor(Math.sin(count) * 128)
     }    
     mainWindow.webContents.send('periodic-data', data);
     console.log(data.uv);
   
-    count+=0.1;
+    count+=0.25;
   }, 100)  
 })
 

@@ -27,7 +27,7 @@ function App() {
     return () => {
       electron.ipcRenderer.removeAllListeners('periodic-data');
     } ;
-  }, 10);
+  }, []);
 
   return (
     <div className="App">
