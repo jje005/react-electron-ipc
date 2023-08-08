@@ -4,6 +4,11 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 class ViewSin extends PureComponent {
   render() {
     const { sinData } = this.props;
+    const data = sinData.map((value, index) => ({
+      name: index,
+      uv: value
+    }));
+    
 
     return (
       <ResponsiveContainer width="100%" height="100%">
