@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { SEND_MAIN_PING, SET_SIN_VALUE } from './constants';
-import ViewSin from './components/viewSin';
 import LineChartComponent from './components/Line';
 
 

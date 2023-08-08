@@ -22,20 +22,6 @@ ipcMain.on(SEND_MAIN_PING, (event, arg) => {
   console.log("Main.js received a ping!!!");
 });
 
-// function setSinValue(){
-//   setInterval(() => {
-//     const data = {
-//       name: `Page ${count}`,
-//       uv: Math.floor(Math.sin(count * Math.PI) * 128)
-
-//     };
-    
-//     mainWindow.webContents.send('periodic-data', data);
-
-//     count++;
-//   }
-// ), 1000};
-
 let intervalId = null; // interval ID 저장 변수 추가
 
 ipcMain.on(SET_SIN_VALUE, (event, arg) => {
@@ -50,8 +36,8 @@ ipcMain.on(SET_SIN_VALUE, (event, arg) => {
     mainWindow.webContents.send('periodic-data', data);
     console.log(data.uv);
 
-    count+=0.5;
-  }, 500)
+    count+=0.1;
+  }, 100)
 })
 
 
