@@ -13,20 +13,19 @@ function initMainModel(mainWindow) {
     console.log('Sin값 요청');
     intervalId = setInterval(() => {
       const data = {
-        name: ` ${(count)} ms`,
-        uv: Math.sin(count * 0.01) * 128,
+        xcount: count,
+        uv: Math.sin(count * 0.1) * 128,
       };
       mainWindow.webContents.send(CYCLE_SIN_DATA, data);
-      console.log(data.uv);
+      console.log(data.xcount+':'+ data.uv);
 
       count++;
-    }, 10);
+    }, 30);
   });
 
   ipcMain.on(STOP_SIN_DATA, () => {
     console.log('Sin 데이터 생성 종료');
     clearInterval(intervalId);
-    mainWindow.webContents.send(STOP_SIN_DATA, 'stop');
   });
 }
 
