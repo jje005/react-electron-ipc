@@ -14,7 +14,7 @@ function App() {
   }
 
   const changeView = (viewName) => {
-    electron.ipcRenderer.send(SET_SIN_VALUE, 'sin');
+    // electron.ipcRenderer.send(SET_SIN_VALUE, 'sin');
     setCurrentView(viewName);
   }
 

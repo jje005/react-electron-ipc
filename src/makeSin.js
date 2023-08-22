@@ -14,13 +14,13 @@ function initMainModel(mainWindow) {
     intervalId = setInterval(() => {
       const data = {
         xcount: count,
-        uv: Math.sin(count * 0.1) * 128,
+        uv: Math.sin(count * 0.01) * 128,
       };
       mainWindow.webContents.send(CYCLE_SIN_DATA, data);
       console.log(data.xcount+':'+ data.uv);
 
       count++;
-    }, 30);
+    }, 10);
   });
 
   ipcMain.on(STOP_SIN_DATA, () => {
