@@ -4,7 +4,7 @@ const { initMainModel } = require('./makeSin');
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 800,
+    width: 1200,
     height: 600,
     webPreferences: {
       devTools: true, 

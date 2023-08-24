@@ -1,31 +1,70 @@
+// import React, { useState, useEffect, memo } from 'react';
+// import GraphContainer from './components/GraphContainer';
+// import Navigation from './components/Navigation';
+
+
+
+// const electron = window.require("electron")
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <header className="App-header" 그래프 뷰어>
+//       </header>
+//       <div className="App-container">
+//         <div className="App-navigation">
+//           <Navigation />
+//         </div>
+//         <div className="App-main">
+//           <GraphContainer />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default memo(App);
+
+
+
 import React, { useState, useEffect, memo } from 'react';
-import { SEND_MAIN_PING, SET_SIN_VALUE, CYCLE_SIN_DATA } from './constants';
-import LineChartComponent from './components/Line';
-
-
-const electron = window.require("electron")
+import GraphContainer from './components/GraphContainer';
+import Navigation from './components/Navigation';
+import './App.css';
 
 function App() {
-  const [currentView, setCurrentView] = useState('main');
-  const [sinData = [], setSinData] = useState([]); // sinData 상태 추가
+  const [graphSettings, setGraphSettings] = useState({
+    isSinChecked: true,
+    isStepChecked: true,
+    isRandomChecked: true,
+  });
 
-
-
-    return () => {
-      electron.ipcRenderer.removeAllListeners(CYCLE_SIN_DATA);
-    } ;
+  const updateGraphSettings = (type, value) => {
+    setGraphSettings(prevSettings => ({
+      ...prevSettings,
+      [type]: value,
+    }));
+  };
 
   return (
     <div className="App">
       <header className="App-header">
-      {currentView  (
-          <React.Fragment>
-            <p>그래프를 그려보자</p>
-            <button size="large" onClick={sendMain}>Send Ping</button>
-          </React.Fragment>
-        )
-      }
       </header>
+      <div className="App-container">
+        <div className="App-navigation">
+          <Navigation
+            isSinChecked={graphSettings.isSinChecked}
+            isStepChecked={graphSettings.isStepChecked}
+            isRandomChecked={graphSettings.isRandomChecked}
+            updateGraphSettings={updateGraphSettings}
+          />
+        </div>
+        <div className="App-main">
+          <GraphContainer
+            graphSettings={graphSettings}
+          />
+        </div>
+      </div>
     </div>
   );
 }

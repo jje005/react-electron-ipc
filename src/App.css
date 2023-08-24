@@ -1,36 +1,26 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
 }
 
+.App-container {
+  display: flex;
+  
+}
 
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-navigation {
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 140px;
+  flex-shrink: 0;
+  border: 1px solid gray;
+  display: flex; /* 아이템을 가운데 정렬하기 위해 flex로 설정 */
+  flex-direction: column;
+}
+.App-main {
+  margin-top: 20px;
+  margin-left: 5px;
+  margin-right: 10px;
+  flex: 1; /* 남은 공간을 차지 */
+  border: 1px solid gray;
 }
