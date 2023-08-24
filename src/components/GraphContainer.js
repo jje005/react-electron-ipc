@@ -1,4 +1,7 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo} from 'react';
+import playIcon from '../icon/play.png'
+import pauseIcon from '../icon/pause.png'
+import '../icon/graphContainer.css';
 import {
   LineChart,
   XAxis,
@@ -64,13 +67,13 @@ function GraphContainer({ graphSettings }) {
   }
 
   
-  if (count % 100 === 0 && count !== 0) {
+  if (count % 500 === 0 && count !== 0) {
     const uniqueKey = { count };
     console.log("빨간선 생성");
     ReferenceLines.push(<ReferenceLine key={uniqueKey} x={count} stroke="red" label={count + "ms"} />)
   }
 
-  if (data.length > 100) {
+  if (data.length > 128) {
       data.shift();
   }
   const handlePauseButtonClick = () => {
@@ -81,11 +84,24 @@ function GraphContainer({ graphSettings }) {
     setIsIntervalRunning(true);
   };
 
-
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h1>그래프 도식</h1>
+        <header className="header">
+            <h1>그래프</h1>
+            <div className="icon"> 
+        <img className="icon-play"
+            src={playIcon}
+            alt="Play"
+            onClick={handleResumeButtonClick}
+        />  
+
+        <img className="icon-pause"
+            src={pauseIcon}
+            alt="puase"
+            onClick={handlePauseButtonClick}
+        />  
+      </div>
+        </header>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
         <LineChart width={720} height={400} data={data}>
           <XAxis dataKey="name" domain={[0, data.length - 1]} tickFormatter={(value) => `${value}ms`} />
@@ -96,12 +112,7 @@ function GraphContainer({ graphSettings }) {
           {ReferenceLines}
           {graphComponents}
         </LineChart>
-        <div>
-        {/* 잠시 멈추는 버튼 */}
-        <button onClick={handlePauseButtonClick}>일시 정지</button>
-        {/* 다시 시작하는 버튼 */}
-        <button onClick={handleResumeButtonClick}>다시 시작</button>
-      </div>
+
       </div>
     </div>   
   );

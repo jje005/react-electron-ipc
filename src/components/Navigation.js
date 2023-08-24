@@ -36,40 +36,36 @@ function Navigation({
 
   return (
     <div>
-      <label>
-        <input
-          type="checkbox"
-          onChange={allCheckedHandler}
-          checked={isSinChecked && isStepChecked && isRandomChecked}
-        />
-        전체선택
-      </label>
+        <label>
+            <input
+                type="checkbox"
+                onChange={allCheckedHandler}
+                checked={isSinChecked && isStepChecked && isRandomChecked}
+            /> 전체선택
+        </label>
       <br />
-      <label>
-        <input
-          type="checkbox"
-          checked={isSinChecked}
-          onChange={handleSinCheck}
-        />
-        Sin
-      </label>
+        <label>
+             <input
+                type="checkbox"
+                checked={isSinChecked}
+                onChange={handleSinCheck}
+            /> Sin
+        </label>
       <br />
-      <label>
-        <input
-          type="checkbox"
-          checked={isStepChecked}
-          onChange={handleStepCheck}
-        />
-        Step
-      </label>
+        <label>
+            <input
+                type="checkbox"
+                checked={isStepChecked}
+                onChange={handleStepCheck}
+            /> Step
+        </label>
       <br />
-      <label>
-        <input
-          type="checkbox"
-          checked={isRandomChecked}
-          onChange={handleRandomCheck}
-        />
-        Random
+        <label>
+            <input
+                type="checkbox"
+                checked={isRandomChecked}
+                onChange={handleRandomCheck}
+            /> Random
       </label>
     </div>
   );
