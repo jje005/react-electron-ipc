@@ -27,7 +27,7 @@
 
 
 
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, memo } from 'react';
 import GraphContainer from './components/GraphContainer';
 import Navigation from './components/Navigation';
 import './App.css';
@@ -49,6 +49,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {/* Your header content */}
       </header>
       <div className="App-container">
         <div className="App-navigation">

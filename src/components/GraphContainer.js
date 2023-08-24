@@ -11,23 +11,28 @@ import {
 } from 'recharts';
 
 function GraphContainer({ graphSettings }) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
-  const [referenceLines, setReferenceLines] = useState([]);
+  const [isIntervalRunning, setIsIntervalRunning] = useState(true); 
+
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCount(prevCount => prevCount + 1);
-    }, 50);
+    let intervalId;
+
+    if (isIntervalRunning) { // interval이 실행 중인 경우에만 실행
+      intervalId = setInterval(() => {
+        setCount(prevCount => prevCount + 1);
+      }, 10);
+    }
 
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [isIntervalRunning]);
 
   useEffect(() => {
     if (graphSettings.isSinChecked || graphSettings.isStepChecked || graphSettings.isRandomChecked) {
-      const newSin = Math.sin(count) * 128;
+      const newSin = Math.sin(count*0.1) * 128;
       const newStep = (count % 512 < 256) ? (-127 + (count % 256)) : (128 - (count % 256));
         
       const newRandom = Math.random() * 255 - 127;
@@ -44,6 +49,7 @@ function GraphContainer({ graphSettings }) {
   }, [count, graphSettings.isSinChecked, graphSettings.isStepChecked, graphSettings.isRandomChecked]);
 
   const graphComponents = [];
+  const ReferenceLines = [];
 
   if (graphSettings.isSinChecked) {
     graphComponents.push(<Line type="monotone" dataKey="sin" stroke="#8884d8" key="sin" />);
@@ -57,19 +63,25 @@ function GraphContainer({ graphSettings }) {
     graphComponents.push(<Line type="monotone" dataKey="random" stroke="#ffc658" key="random" />);
   }
 
-  if (data.name % 1000 && data.name !== 0) {
-    const uniqueKey = `referenceLine-${data}`;
+  
+  if (count % 100 === 0 && count !== 0) {
+    const uniqueKey = { count };
     console.log("빨간선 생성");
-    setReferenceLines(preReferenceLines => [
-        ...preReferenceLines, <ReferenceLine key={uniqueKey} x={data.name} stroke="red" label= {data.name+"ms"} />
-    ]);
-
-
+    ReferenceLines.push(<ReferenceLine key={uniqueKey} x={count} stroke="red" label={count + "ms"} />)
   }
 
-  if (data.length > 131) {
+  if (data.length > 100) {
       data.shift();
   }
+  const handlePauseButtonClick = () => {
+    setIsIntervalRunning(false);
+  };
+
+  const handleResumeButtonClick = () => {
+    setIsIntervalRunning(true);
+  };
+
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -81,11 +93,17 @@ function GraphContainer({ graphSettings }) {
           <CartesianGrid stroke="#ccc" />
           <Tooltip />
           <Legend />
-          {referenceLines}
+          {ReferenceLines}
           {graphComponents}
         </LineChart>
+        <div>
+        {/* 잠시 멈추는 버튼 */}
+        <button onClick={handlePauseButtonClick}>일시 정지</button>
+        {/* 다시 시작하는 버튼 */}
+        <button onClick={handleResumeButtonClick}>다시 시작</button>
       </div>
-    </div>
+      </div>
+    </div>   
   );
 }
 

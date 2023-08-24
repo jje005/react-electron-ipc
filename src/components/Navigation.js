@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 
 function Navigation({ 
   isSinChecked, 
@@ -10,13 +10,28 @@ function Navigation({
   updateGraphSettings
 }) {
   const allCheckedHandler = ({ target }) => {
-    setIsSinChecked(target.checked);
-    setIsStepChecked(target.checked);
-    setIsRandomChecked(target.checked);
+    const isChecked = target.checked;
 
-    updateGraphSettings('sin', target.checked);
-    updateGraphSettings('step', target.checked);
-    updateGraphSettings('random', target.checked);
+
+
+    updateGraphSettings('isSinChecked', isChecked);
+    updateGraphSettings('isStepChecked', isChecked);
+    updateGraphSettings('isRandomChecked', isChecked);
+  };
+
+  const handleSinCheck = () => {
+    setIsSinChecked(!isSinChecked);
+    updateGraphSettings('isSinChecked', !isSinChecked);
+  };
+
+  const handleStepCheck = () => {
+    setIsStepChecked(!isStepChecked);
+    updateGraphSettings('isStepChecked', !isStepChecked);
+  };
+
+  const handleRandomCheck = () => {
+    setIsRandomChecked(!isRandomChecked);
+    updateGraphSettings('isRandomChecked', !isRandomChecked);
   };
 
   return (
@@ -24,7 +39,7 @@ function Navigation({
       <label>
         <input
           type="checkbox"
-          onChange={(e) => allCheckedHandler(e)}
+          onChange={allCheckedHandler}
           checked={isSinChecked && isStepChecked && isRandomChecked}
         />
         전체선택
@@ -34,7 +49,7 @@ function Navigation({
         <input
           type="checkbox"
           checked={isSinChecked}
-          onChange={() => setIsSinChecked(!isSinChecked)}
+          onChange={handleSinCheck}
         />
         Sin
       </label>
@@ -43,7 +58,7 @@ function Navigation({
         <input
           type="checkbox"
           checked={isStepChecked}
-          onChange={() => setIsStepChecked(!isStepChecked)}
+          onChange={handleStepCheck}
         />
         Step
       </label>
@@ -52,7 +67,7 @@ function Navigation({
         <input
           type="checkbox"
           checked={isRandomChecked}
-          onChange={() => setIsRandomChecked(!isRandomChecked)}
+          onChange={handleRandomCheck}
         />
         Random
       </label>
