@@ -4,15 +4,10 @@ function Navigation({
   isSinChecked, 
   isStepChecked, 
   isRandomChecked, 
-  setIsSinChecked, 
-  setIsStepChecked, 
-  setIsRandomChecked,
   updateGraphSettings
 }) {
   const allCheckedHandler = ({ target }) => {
     const isChecked = target.checked;
-
-
 
     updateGraphSettings('isSinChecked', isChecked);
     updateGraphSettings('isStepChecked', isChecked);
@@ -20,18 +15,18 @@ function Navigation({
   };
 
   const handleSinCheck = () => {
-    setIsSinChecked(!isSinChecked);
-    updateGraphSettings('isSinChecked', !isSinChecked);
+    const newIsSinChecked = !isSinChecked;
+    updateGraphSettings('isSinChecked', newIsSinChecked);
   };
-
+  
   const handleStepCheck = () => {
-    setIsStepChecked(!isStepChecked);
-    updateGraphSettings('isStepChecked', !isStepChecked);
+    const newIsStepChecked = !isStepChecked;
+    updateGraphSettings('isStepChecked', newIsStepChecked);
   };
-
+  
   const handleRandomCheck = () => {
-    setIsRandomChecked(!isRandomChecked);
-    updateGraphSettings('isRandomChecked', !isRandomChecked);
+    const newIsRandomChecked = !isRandomChecked;
+    updateGraphSettings('isRandomChecked', newIsRandomChecked);
   };
 
   return (

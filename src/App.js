@@ -1,32 +1,3 @@
-// import React, { useState, useEffect, memo } from 'react';
-// import GraphContainer from './components/GraphContainer';
-// import Navigation from './components/Navigation';
-
-
-
-// const electron = window.require("electron")
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header" 그래프 뷰어>
-//       </header>
-//       <div className="App-container">
-//         <div className="App-navigation">
-//           <Navigation />
-//         </div>
-//         <div className="App-main">
-//           <GraphContainer />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default memo(App);
-
-
-
 import React, { useState, memo } from 'react';
 import GraphContainer from './components/GraphContainer';
 import Navigation from './components/Navigation';
@@ -49,7 +20,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* Your header content */}
       </header>
       <div className="App-container">
         <div className="App-navigation">

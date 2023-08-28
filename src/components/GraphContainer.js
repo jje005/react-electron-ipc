@@ -11,18 +11,20 @@ import {
   Legend,
   Line,
   ReferenceLine,
+  Brush,
+  Label,
 } from 'recharts';
 
 function GraphContainer({ graphSettings }) {
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
   const [isIntervalRunning, setIsIntervalRunning] = useState(true); 
-
+  const [ReferenceLines, setReferenceLines] = useState(new Map());
 
   useEffect(() => {
     let intervalId;
 
-    if (isIntervalRunning) { // interval이 실행 중인 경우에만 실행
+    if (isIntervalRunning) {
       intervalId = setInterval(() => {
         setCount(prevCount => prevCount + 1);
       }, 10);
@@ -34,11 +36,10 @@ function GraphContainer({ graphSettings }) {
   }, [isIntervalRunning]);
 
   useEffect(() => {
-    if (graphSettings.isSinChecked || graphSettings.isStepChecked || graphSettings.isRandomChecked) {
+    if (graphSettings.isSinChecked && graphSettings.isStepChecked && graphSettings.isRandomChecked) {
       const newSin = Math.sin(count*0.1) * 128;
       const newStep = (count % 512 < 256) ? (-127 + (count % 256)) : (128 - (count % 256));
-        
-      const newRandom = Math.random() * 255 - 127;
+      const newRandom = Math.random(count) * 255 - 127;
   
       const newData = {
         name: count,
@@ -46,33 +47,40 @@ function GraphContainer({ graphSettings }) {
         step: graphSettings.isStepChecked ? newStep : null,
         random: graphSettings.isRandomChecked ? newRandom : null,
       };
-  
       setData(prevData => [...prevData, newData]);
     }
   }, [count, graphSettings.isSinChecked, graphSettings.isStepChecked, graphSettings.isRandomChecked]);
 
-  const graphComponents = [];
-  const ReferenceLines = [];
+  const sinGraph = [];
+  const stepGraph = [];
+  const randomGraph = [];
 
   if (graphSettings.isSinChecked) {
-    graphComponents.push(<Line type="monotone" dataKey="sin" stroke="#8884d8" key="sin" />);
+    sinGraph.push(<Line type="monotone" dataKey="sin" stroke="#8884d8" key="sin" />);
   }
 
   if (graphSettings.isStepChecked) {
-    graphComponents.push(<Line type="step" dataKey="step" stroke="#82ca9d" key="step" />);
+    stepGraph.push(<Line type="step" dataKey="step" stroke="#82ca9d" key="step" />);
   }
 
   if (graphSettings.isRandomChecked) {
-    graphComponents.push(<Line type="monotone" dataKey="random" stroke="#ffc658" key="random" />);
+    randomGraph.push(<Line type="monotone" dataKey="random" stroke="#ffc658" key="random" />);
   }
 
-  
-  if (count % 500 === 0 && count !== 0) {
-    const uniqueKey = { count };
-    console.log("빨간선 생성");
-    ReferenceLines.push(<ReferenceLine key={uniqueKey} x={count} stroke="red" label={count + "ms"} />)
-  }
+  useEffect(() => {
+    if (count % 200 === 0 && count !== 0) {
+      const uniqueKey = `ReferenceLines${count}`;
+      console.log("빨간선 생성");
 
+      const newReferenceLine = (
+        <ReferenceLine key={uniqueKey} x={count} stroke="red" label={`${count}ms`} />
+      );
+      
+      setReferenceLines(prevLines => new Map(prevLines).set(uniqueKey, newReferenceLine));
+    }
+  }, [count]);
+    
+    
   if (data.length > 128) {
       data.shift();
   }
@@ -94,7 +102,6 @@ function GraphContainer({ graphSettings }) {
             alt="Play"
             onClick={handleResumeButtonClick}
         />  
-
         <img className="icon-pause"
             src={pauseIcon}
             alt="puase"
@@ -103,14 +110,19 @@ function GraphContainer({ graphSettings }) {
       </div>
         </header>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+
         <LineChart width={720} height={400} data={data}>
           <XAxis dataKey="name" domain={[0, data.length - 1]} tickFormatter={(value) => `${value}ms`} />
+          <Label value="[ms]"  position="bottom" />
           <YAxis domain={[-127, 128]} ticks={[-127, -64, 0, 64, 128]} />
-          <CartesianGrid stroke="#ccc" />
+          <CartesianGrid stroke="#ccc" dot="5, 5"/>
           <Tooltip />
+          <Brush dataKey="name" height={15} stroke="black" />
           <Legend />
           {ReferenceLines}
-          {graphComponents}
+          {sinGraph}
+          {stepGraph}
+          {randomGraph}
         </LineChart>
 
       </div>
