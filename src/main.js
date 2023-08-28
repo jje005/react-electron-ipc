@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const { initMainModel } = require('./makeSin');
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -20,7 +19,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   const mainWindow = createWindow();
-  initMainModel(mainWindow);
+  BrowserWindow.exports = { mainWindow };
 });
 
 app.on('window-all-closed', function () {
