@@ -24,7 +24,7 @@ function GraphContainer({ graphSettings }) {
   useEffect(() => {
     let intervalId;
 
-    if (isIntervalRunning) {
+    if (isIntervalRunning) { // interval이 실행 중인 경우에만 실행
       intervalId = setInterval(() => {
         setCount(prevCount => prevCount + 1);
       }, 10);
@@ -35,10 +35,12 @@ function GraphContainer({ graphSettings }) {
     };
   }, [isIntervalRunning]);
 
+  //interval이 진행중이고 Navigation에서 체크박스에 체크가 된 그래프는 데이터가 생성이된다
   useEffect(() => {
-    if (graphSettings.isSinChecked && graphSettings.isStepChecked && graphSettings.isRandomChecked) {
+    if (isIntervalRunning && (graphSettings.isSinChecked || graphSettings.isStepChecked || graphSettings.isRandomChecked)) {
       const newSin = Math.sin(count*0.1) * 128;
-      const newStep = (count % 512 < 256) ? (-127 + (count % 256)) : (128 - (count % 256));
+      const newStep = (count % 64 < 32) ? (-127 + (8*count % 256)) : (128 - (8*count % 256));
+      // const newStep = (count % 512 < 256) ? (-127 + (count % 256)) : (128 - (count % 256));
       const newRandom = Math.random(count) * 255 - 127;
   
       const newData = {
@@ -49,24 +51,24 @@ function GraphContainer({ graphSettings }) {
       };
       setData(prevData => [...prevData, newData]);
     }
-  }, [count, graphSettings.isSinChecked, graphSettings.isStepChecked, graphSettings.isRandomChecked]);
+  }, [count, graphSettings.isSinChecked, graphSettings.isStepChecked, graphSettings.isRandomChecked, isIntervalRunning]);
 
-  const sinGraph = [];
-  const stepGraph = [];
-  const randomGraph = [];
+  const graphComponents = [];
 
   if (graphSettings.isSinChecked) {
-    sinGraph.push(<Line type="monotone" dataKey="sin" stroke="#8884d8" key="sin" />);
+    graphComponents.push(<Line type="monotone" dataKey="sin" stroke="#8884d8" key="sin" />);
   }
 
   if (graphSettings.isStepChecked) {
-    stepGraph.push(<Line type="step" dataKey="step" stroke="#82ca9d" key="step" />);
+    graphComponents.push(<Line type="step" dataKey="step" stroke="#82ca9d" key="step" />);
   }
 
   if (graphSettings.isRandomChecked) {
-    randomGraph.push(<Line type="monotone" dataKey="random" stroke="#ffc658" key="random" />);
+    graphComponents.push(<Line type="monotone" dataKey="random" stroke="#ffc658" key="random" />);
   }
 
+  
+  //1000ms주기로 빨간선 생성하는 코드
   useEffect(() => {
     if (count % 200 === 0 && count !== 0) {
       const uniqueKey = `ReferenceLines${count}`;
@@ -80,10 +82,11 @@ function GraphContainer({ graphSettings }) {
     }
   }, [count]);
     
-    
-  if (data.length > 128) {
-      data.shift();
-  }
+
+  //data의 크기 128 초과시 삭제(128이하로 유지)
+  // if (data.length > 128) {
+  //     data.shift();
+  // }
   const handlePauseButtonClick = () => {
     setIsIntervalRunning(false);
   };
@@ -112,17 +115,15 @@ function GraphContainer({ graphSettings }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
 
         <LineChart width={720} height={400} data={data}>
-          <XAxis dataKey="name" domain={[0, data.length - 1]} tickFormatter={(value) => `${value}ms`} />
+          <XAxis  className ="Graph" dataKey="name" domain={[data.length-50, data.length]} tickFormatter={(value) => `${value}ms`} />
           <Label value="[ms]"  position="bottom" />
           <YAxis domain={[-127, 128]} ticks={[-127, -64, 0, 64, 128]} />
           <CartesianGrid stroke="#ccc" dot="5, 5"/>
           <Tooltip />
-          <Brush dataKey="name" height={15} stroke="black" />
+          {/* <Brush dataKey="name" height={15} stroke="black" /> */}
           <Legend />
           {ReferenceLines}
-          {sinGraph}
-          {stepGraph}
-          {randomGraph}
+          {graphComponents}
         </LineChart>
 
       </div>

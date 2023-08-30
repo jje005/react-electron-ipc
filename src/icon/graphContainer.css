@@ -29,3 +29,7 @@
     text-align: center; /* 가운데 정렬 */
     margin: 0; /* 기본 마진 제거 */
   }
+  .Graph {
+    overflow: scroll;
+  }
+  
