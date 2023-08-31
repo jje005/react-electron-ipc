@@ -2,7 +2,7 @@
   "name": "react-electron",
   "version": "0.1.0",
   "private": true,
-  "main": "src/main.js",
+  "main": "src/electron/main.js",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
